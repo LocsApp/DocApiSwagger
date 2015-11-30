@@ -1,0 +1,255 @@
+swagger: '2.0'
+info:
+  title: LocsApp API
+  description: Api in development for LocsApp 
+  version: 1.0.0
+host: 127.0.0.1:8000
+schemes:
+  - http
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /rest-auth/registration/:
+    post:
+      summary: Register an user
+      description: |
+        The register endpoint returns a key corresponding to an authentication token.
+        Or an error if they were a problem
+      parameters:
+        - name: email
+          in: body
+          description: Email of the new user
+          required: true
+          type: string
+        - name: username
+          in: body
+          description: Username of the new user
+          required: true
+          type: string
+        - name: password1
+          in: body
+          description: Password of the new user
+          required: true
+          type: string
+        - name: password2
+          in: body
+          description: Confirm password of the new user
+          required: true
+          type: string
+      tags:
+        - Users
+        - Register
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Key'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorRegister'
+        
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorRegister'
+            
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+            
+  
+  /rest-auth/login/ :
+    post:
+      summary: Log an user to get an authentication token
+      description: |
+        The login endpoint returs a Token and an HTTP status code. Or an error
+        with the http status corresponding to it
+      parameters:
+        - name: username
+          in: body
+          description: Username of the new user
+          required: true
+          type: string
+        - name: password
+          in: body
+          description: Password of the new user
+          required: true
+          type: string
+      tags:
+        - Users
+        - Login
+      responses:
+        '200':
+          description: Return an authentication token
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Key'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorLogin1' 
+        'also 400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorLogin2'     
+  
+  /rest-auth/logout/:
+    post:
+      summary: Logout the connected User
+      description: This endpoint lets you log out an user using his token. If the token is not provided the return of the endpoint will be 200. And if a token is provided and does not exist the return will be 401
+      tags:
+        - User
+        - Logout
+        - Token
+      responses:
+        '200':
+          description: 'A success message'
+          schema:
+            $ref: '#/definitions/Logout'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'    
+      
+  /rest-auth/user/:
+    get:
+      summary: User Profile
+      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
+      tags:
+        - User
+        - Token
+      responses:
+        '200':
+          description: Profile information for a user
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized' 
+    put:
+      summary: User Profile
+      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
+      parameters:
+        - name: first_name
+          in: body
+          required: false
+          type: string
+        - name: last_name
+          in: body
+          required: false
+          type: string
+        - name: birthdate
+          in: body
+          required: false
+          type: string  
+        - name: phone
+          in: body
+          required: false
+          type: string
+        - name: living_address
+          in: body
+          required: false
+          type: string  
+        - name: registered_date
+          in: body
+          required: false
+          type: string  
+        - name: billing_address
+          in: body
+          required: false
+          type: string  
+      tags:
+        - User
+        - Token
+      responses:
+        '200':
+          description: Profile information for a user
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+    
+definitions:
+  Key:
+    type: object
+    properties:
+      key:
+        type: String
+        description: "Access Token"
+ 
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        description: Username of the user
+      email:
+        type: email
+      first_name:
+        type: string
+      last_name:
+        type: string
+      birthdate:
+        type: string
+      phone:
+        type: string
+      living_address:
+        type: string
+      registered_date:
+        type: string
+      last_activity_date:
+        type: string
+      billing_address:
+        type: string
+      logo_url:
+        type: string
+      is_active:
+        type: boolean
+      role:
+        type: string  
+      
+  
+  Logout:
+    type: object
+    properties:
+      success:
+        type: String
+        description: Successfully logged out.
+  
+  
+  ErrorUnAuthorized:
+    type: object
+    properties:
+      detail:
+        type: string
+        description: Invalid token.
+  
+  ErrorRegister:
+    type: object
+    properties:
+      email:
+        type: array
+      username:
+        type: array
+        
+  ErrorLogin1:
+    type: object
+    properties:
+      non_field_errors:
+        type: array
+  ErrorLogin2:
+    type: object
+    properties:
+      password:
+        type: array      
+  
+        
