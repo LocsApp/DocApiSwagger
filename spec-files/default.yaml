@@ -1,277 +1,255 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
-  title: Uber API
-  description: Move your app forward with the Uber API
-  version: "1.0.0"
-# the domain of the service
-host: api.uber.com
-# array of all schemes that your API supports
+  title: LocsApp API
+  description: Api in development for LocsApp 
+  version: 1.0.0
+host: 127.0.0.1:8000
 schemes:
-  - https
-# will be prefixed to all paths
-basePath: /v1
+  - http
+basePath: /api/v1
 produces:
   - application/json
 paths:
-  /products:
-    get:
-      summary: Product Types
+  /rest-auth/registration/:
+    post:
+      summary: Register an user
       description: |
-        The Products endpoint returns information about the *Uber* products
-        offered at a given location. The response includes the display name
-        and other details about each product, and lists the products in the
-        proper display order.
+        The register endpoint returns a key corresponding to an authentication token.
+        Or an error if they were a problem
       parameters:
-        - name: latitude
-          in: query
-          description: Latitude component of location.
+        - name: email
+          in: body
+          description: Email of the new user
           required: true
-          type: number
-          format: double
-        - name: longitude
-          in: query
-          description: Longitude component of location.
+          type: string
+        - name: username
+          in: body
+          description: Username of the new user
           required: true
-          type: number
-          format: double
+          type: string
+        - name: password1
+          in: body
+          description: Password of the new user
+          required: true
+          type: string
+        - name: password2
+          in: body
+          description: Confirm password of the new user
+          required: true
+          type: string
       tags:
-        - Products
+        - Users
+        - Register
       responses:
-        200:
-          description: An array of products
+        '201':
+          description: Created
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
-        default:
-          description: Unexpected error
+              $ref: '#/definitions/Key'
+        '400':
+          description: Bad request
           schema:
-            $ref: '#/definitions/Error'
-  /estimates/price:
-    get:
-      summary: Price Estimates
+            $ref: '#/definitions/ErrorRegister'
+        
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorRegister'
+            
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+            
+  
+  /rest-auth/login/ :
+    post:
+      summary: Log an user to get an authentication token
       description: |
-        The Price Estimates endpoint returns an estimated price range
-        for each product offered at a given location. The price estimate is
-        provided as a formatted string with the full price range and the localized
-        currency symbol.<br><br>The response also includes low and high estimates,
-        and the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for
-        situations requiring currency conversion. When surge is active for a particular
-        product, its surge_multiplier will be greater than 1, but the price estimate
-        already factors in this multiplier.
+        The login endpoint returs a Token and an HTTP status code. Or an error
+        with the http status corresponding to it
       parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
+        - name: username
+          in: body
+          description: Username of the new user
           required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
+          type: string
+        - name: password
+          in: body
+          description: Password of the new user
           required: true
-          type: number
-          format: double
-        - name: end_latitude
-          in: query
-          description: Latitude component of end location.
-          required: true
-          type: number
-          format: double
-        - name: end_longitude
-          in: query
-          description: Longitude component of end location.
-          required: true
-          type: number
-          format: double
+          type: string
       tags:
-        - Estimates
+        - Users
+        - Login
       responses:
-        200:
-          description: An array of price estimates by product
+        '200':
+          description: Return an authentication token
           schema:
             type: array
             items:
-              $ref: '#/definitions/PriceEstimate'
-        default:
-          description: Unexpected error
+              $ref: '#/definitions/Key'
+        '400':
+          description: Bad request
           schema:
-            $ref: '#/definitions/Error'
-  /estimates/time:
-    get:
-      summary: Time Estimates
-      description: The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.
-      parameters:
-        - name: start_latitude
-          in: query
-          description: Latitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: start_longitude
-          in: query
-          description: Longitude component of start location.
-          required: true
-          type: number
-          format: double
-        - name: customer_uuid
-          in: query
-          type: string
-          format: uuid
-          description: Unique customer identifier to be used for experience customization.
-        - name: product_id
-          in: query
-          type: string
-          description: Unique identifier representing a specific product for a given latitude & longitude.
+            $ref: '#/definitions/ErrorLogin1' 
+        'also 400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorLogin2'     
+  
+  /rest-auth/logout/:
+    post:
+      summary: Logout the connected User
+      description: This endpoint lets you log out an user using his token. If the token is not provided the return of the endpoint will be 200. And if a token is provided and does not exist the return will be 401
       tags:
-        - Estimates
+        - User
+        - Logout
+        - Token
       responses:
-        200:
-          description: An array of products
+        '200':
+          description: 'A success message'
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Product'
-        default:
-          description: Unexpected error
+            $ref: '#/definitions/Logout'
+        '401':
+          description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/Error'
-  /me:
+            $ref: '#/definitions/ErrorUnAuthorized'    
+      
+  /rest-auth/user/:
     get:
       summary: User Profile
       description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
       tags:
         - User
+        - Token
       responses:
-        200:
+        '200':
           description: Profile information for a user
           schema:
-            $ref: '#/definitions/Profile'
-        default:
-          description: Unexpected error
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/Error'
-  /history:
-    get:
-      summary: User Activity
-      description: The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.
+            $ref: '#/definitions/ErrorUnAuthorized' 
+    put:
+      summary: User Profile
+      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
       parameters:
-        - name: offset
-          in: query
-          type: integer
-          format: int32
-          description: Offset the list of returned results by this amount. Default is zero.
-        - name: limit
-          in: query
-          type: integer
-          format: int32
-          description: Number of items to retrieve. Default is 5, maximum is 100.
+        - name: first_name
+          in: body
+          required: false
+          type: string
+        - name: last_name
+          in: body
+          required: false
+          type: string
+        - name: birthdate
+          in: body
+          required: false
+          type: string  
+        - name: phone
+          in: body
+          required: false
+          type: string
+        - name: living_address
+          in: body
+          required: false
+          type: string  
+        - name: registered_date
+          in: body
+          required: false
+          type: string  
+        - name: billing_address
+          in: body
+          required: false
+          type: string  
       tags:
         - User
+        - Token
       responses:
-        200:
-          description: History information for the given user
+        '200':
+          description: Profile information for a user
           schema:
-            $ref: '#/definitions/Activities'
-        default:
-          description: Unexpected error
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorUnAuthorized'
+    
 definitions:
-  Product:
+  Key:
     type: object
     properties:
-      product_id:
-        type: string
-        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
-      description:
-        type: string
-        description: Description of product.
-      display_name:
-        type: string
-        description: Display name of product.
-      capacity:
-        type: string
-        description: Capacity of product. For example, 4 people.
-      image:
-        type: string
-        description: Image URL representing the product.
-  PriceEstimate:
+      key:
+        type: String
+        description: "Access Token"
+ 
+  User:
     type: object
     properties:
-      product_id:
+      username:
         type: string
-        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles
-      currency_code:
-        type: string
-        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
-      display_name:
-        type: string
-        description: Display name of product.
-      estimate:
-        type: string
-        description: Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or "Metered" for TAXI.
-      low_estimate:
-        type: number
-        description: Lower bound of the estimated price.
-      high_estimate:
-        type: number
-        description: Upper bound of the estimated price.
-      surge_multiplier:
-        type: number
-        description: Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.
-  Profile:
-    type: object
-    properties:
+        description: Username of the user
+      email:
+        type: email
       first_name:
         type: string
-        description: First name of the Uber user.
       last_name:
         type: string
-        description: Last name of the Uber user.
+      birthdate:
+        type: string
+      phone:
+        type: string
+      living_address:
+        type: string
+      registered_date:
+        type: string
+      last_activity_date:
+        type: string
+      billing_address:
+        type: string
+      logo_url:
+        type: string
+      is_active:
+        type: boolean
+      role:
+        type: string  
+      
+  
+  Logout:
+    type: object
+    properties:
+      success:
+        type: String
+        description: Successfully logged out.
+  
+  
+  ErrorUnAuthorized:
+    type: object
+    properties:
+      detail:
+        type: string
+        description: Invalid token.
+  
+  ErrorRegister:
+    type: object
+    properties:
       email:
-        type: string
-        description: Email address of the Uber user
-      picture:
-        type: string
-        description: Image URL of the Uber user.
-      promo_code:
-        type: string
-        description: Promo code of the Uber user.
-  Activity:
-    type: object
-    properties:
-      uuid:
-        type: string
-        description: Unique identifier for the activity
-  Activities:
-    type: object
-    properties:
-      offset:
-        type: integer
-        format: int32
-        description: Position in pagination.
-      limit:
-        type: integer
-        format: int32
-        description: Number of items to retrieve (100 max).
-      count:
-        type: integer
-        format: int32
-        description: Total number of items available.
-      history:
         type: array
-        items:
-          $ref: '#/definitions/Activity'
-  Error:
+      username:
+        type: array
+        
+  ErrorLogin1:
     type: object
     properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      fields:
-        type: string
+      non_field_errors:
+        type: array
+  ErrorLogin2:
+    type: object
+    properties:
+      password:
+        type: array      
+  
+        
