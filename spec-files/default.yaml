@@ -1,9 +1,9 @@
 swagger: '2.0'
 info:
   title: LocsApp API
-  description: Api in development for LocsApp 
+  description: Api in development for LocsApp
   version: 1.0.0
-host: 127.0.0.1:8000
+host: '127.0.0.1:8000'
 schemes:
   - http
 basePath: /api/v1
@@ -13,8 +13,10 @@ paths:
   /rest-auth/registration/:
     post:
       summary: Register an user
-      description: |
-        The register endpoint returns a key corresponding to an authentication token.
+      description: >
+        The register endpoint returns a key corresponding to an authentication
+        token.
+
         Or an error if they were a problem
       parameters:
         - name: email
@@ -51,19 +53,11 @@ paths:
           description: Bad request
           schema:
             $ref: '#/definitions/ErrorRegister'
-        
-        '400':
-          description: Bad request
-          schema:
-            $ref: '#/definitions/ErrorRegister'
-            
         '401':
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-            
-  
-  /rest-auth/login/ :
+  /rest-auth/login/:
     post:
       summary: Log an user to get an authentication token
       description: |
@@ -93,12 +87,11 @@ paths:
         '400':
           description: Bad request
           schema:
-            $ref: '#/definitions/ErrorLogin1' 
-        'also 400':
+            $ref: '#/definitions/ErrorLogin1'
+        also 400:
           description: Bad request
           schema:
-            $ref: '#/definitions/ErrorLogin2'     
-  
+            $ref: '#/definitions/ErrorLogin2'
   /rest-auth/logout/:
     post:
       summary: Logout the connected User
@@ -109,14 +102,13 @@ paths:
         - Token
       responses:
         '200':
-          description: 'A success message'
+          description: A success message
           schema:
             $ref: '#/definitions/Logout'
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'    
-      
+            $ref: '#/definitions/ErrorUnAuthorized'
   /rest-auth/user/:
     get:
       summary: User Profile
@@ -132,7 +124,7 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized' 
+            $ref: '#/definitions/ErrorUnAuthorized'
     put:
       summary: User Profile
       description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
@@ -148,7 +140,7 @@ paths:
         - name: birthdate
           in: body
           required: false
-          type: string  
+          type: string
         - name: phone
           in: body
           required: false
@@ -156,15 +148,15 @@ paths:
         - name: living_address
           in: body
           required: false
-          type: string  
+          type: string
         - name: registered_date
           in: body
           required: false
-          type: string  
+          type: string
         - name: billing_address
           in: body
           required: false
-          type: string  
+          type: string
       tags:
         - User
         - Token
@@ -177,15 +169,13 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-    
 definitions:
   Key:
     type: object
     properties:
       key:
         type: String
-        description: "Access Token"
- 
+        description: Access Token
   User:
     type: object
     properties:
@@ -215,24 +205,13 @@ definitions:
       is_active:
         type: boolean
       role:
-        type: string  
-      
-  
-  Logout:
-    type: object
-    properties:
-      success:
-        type: String
-        description: Successfully logged out.
-  
-  
+        type: string
   ErrorUnAuthorized:
     type: object
     properties:
       detail:
         type: string
         description: Invalid token.
-  
   ErrorRegister:
     type: object
     properties:
@@ -240,7 +219,6 @@ definitions:
         type: array
       username:
         type: array
-        
   ErrorLogin1:
     type: object
     properties:
@@ -250,6 +228,4 @@ definitions:
     type: object
     properties:
       password:
-        type: array      
-  
-        
+        type: array
