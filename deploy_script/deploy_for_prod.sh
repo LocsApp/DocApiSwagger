@@ -6,7 +6,5 @@ ssh-add /var/lib/jenkins/.ssh/locsAppGitHub_rsa
 git checkout .
 git pull
 
-http-server
-
 sudo /etc/init.d/nginx  restart
 
