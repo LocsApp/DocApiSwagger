@@ -184,6 +184,8 @@ definitions:
         description: Username of the user
       email:
         type: email
+      secondary_emails:
+        type: array
       first_name:
         type: string
       last_name:
@@ -193,13 +195,13 @@ definitions:
       phone:
         type: string
       living_address:
-        type: string
+        type: array
       registered_date:
         type: string
       last_activity_date:
         type: string
       billing_address:
-        type: string
+        type: array
       logo_url:
         type: string
       is_active:
