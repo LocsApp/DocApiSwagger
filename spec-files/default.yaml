@@ -169,6 +169,116 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
+    
+  /rest-auth/password/change/:
+    post:
+      summary: Change password of a connected user
+      description: nothing to say
+      parameters:
+        - name: old_password
+          in: body
+          required: true
+          type: string
+        - name: new_password1
+          in: body
+          required: true
+          type: string  
+        - name: new_password2
+          in: body
+          required: true
+          type: string    
+      tags:
+        - User
+        - Token
+        - Password
+        
+      responses:
+        '200':
+          description: 'Succes change password'
+          schema:
+            $ref: '#/definitions/Success'
+        
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordChangeError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+  
+  /rest-auth/password/reset/:
+    post:
+      summary: Ask for a new password
+      description: >
+        When using this endpoint a mail will be sent so the user can have a new password. The user change his password with a call to a link.
+      parameters:
+        - name: email
+          in: body
+          required: true
+          type: string
+      tags:
+        - User
+        - Token
+        - Password
+        
+      responses:
+        '200':
+          description: 'Succes change password'
+          schema:
+            $ref: '#/definitions/Success'
+        
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordResetError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+            
+  /rest-auth/password/reset/confirm/:
+    post:
+      summary: Confirm the  new password
+      description: 
+      parameters:
+        - name: new_password1
+          in: body
+          required: true
+          type: string
+        - name: new_password2
+          in: body
+          required: true
+          type: string
+        - name: uid
+          in: body
+          required: true
+          type: string
+        - name: token
+          in: body
+          required: true
+          type: string  
+      tags:
+        - User
+        - Token
+        - Password
+        
+      responses:
+        '200':
+          description: 'Succes change password'
+          schema:
+            $ref: '#/definitions/Success'
+        
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordResetConfirmError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'          
+          
+            
 definitions:
   Key:
     type: object
@@ -208,6 +318,44 @@ definitions:
         type: boolean
       role:
         type: string
+        
+  Success:
+    type: object
+    properties:
+      success:
+        type: string      
+  
+  PasswordChangeError:
+    type: object
+    properties:
+      old_password:
+        type: array
+      new_password1:
+        type: array
+      new_password2:
+        type: array
+  
+        
+  
+  PasswordResetError:
+    type: object
+    properties:
+      email:
+        type: array
+        
+  PasswordResetConfirmError:
+    type: object
+    properties:
+      new_password1:
+        type: array
+      new_password2:
+        type: array
+      uid:
+        type: array
+      token:
+        type: array  
+  
+        
   ErrorUnAuthorized:
     type: object
     properties:
