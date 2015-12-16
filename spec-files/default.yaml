@@ -87,7 +87,7 @@ paths:
         '400':
           description: Bad request
           schema:
-            $ref: '#/definitions/ErrorLogin1'
+            $ref: '#/definitions/NonFieldErrors'
         also 400:
           description: Bad request
           schema:
@@ -97,7 +97,7 @@ paths:
       summary: Logout the connected User
       description: This endpoint lets you log out an user using his token. If the token is not provided the return of the endpoint will be 200. And if a token is provided and does not exist the return will be 401
       tags:
-        - User
+        - Users
         - Logout
         - Token
       responses:
@@ -114,7 +114,7 @@ paths:
       summary: User Profile
       description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
       tags:
-        - User
+        - Users
         - Token
       responses:
         '200':
@@ -158,7 +158,7 @@ paths:
           required: false
           type: string
       tags:
-        - User
+        - Users
         - Token
       responses:
         '200':
@@ -169,7 +169,6 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-    
   /rest-auth/password/change/:
     post:
       summary: Change password of a connected user
@@ -182,22 +181,20 @@ paths:
         - name: new_password1
           in: body
           required: true
-          type: string  
+          type: string
         - name: new_password2
           in: body
           required: true
-          type: string    
+          type: string
       tags:
-        - User
+        - Users
         - Token
         - Password
-        
       responses:
         '200':
-          description: 'Succes change password'
+          description: Succes change password
           schema:
             $ref: '#/definitions/Success'
-        
         '400':
           description: BAD REQUEST
           schema:
@@ -206,28 +203,26 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-  
   /rest-auth/password/reset/:
     post:
       summary: Ask for a new password
       description: >
-        When using this endpoint a mail will be sent so the user can have a new password. The user change his password with a call to a link.
+        When using this endpoint a mail will be sent so the user can have a new
+        password. The user change his password with a call to a link.
       parameters:
         - name: email
           in: body
           required: true
           type: string
       tags:
-        - User
+        - Users
         - Token
         - Password
-        
       responses:
         '200':
-          description: 'Succes change password'
+          description: Succes change password
           schema:
             $ref: '#/definitions/Success'
-        
         '400':
           description: BAD REQUEST
           schema:
@@ -236,11 +231,10 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-            
   /rest-auth/password/reset/confirm/:
     post:
       summary: Confirm the  new password
-      description: 
+      description: null
       parameters:
         - name: new_password1
           in: body
@@ -257,18 +251,16 @@ paths:
         - name: token
           in: body
           required: true
-          type: string  
+          type: string
       tags:
-        - User
+        - Users
         - Token
         - Password
-        
       responses:
         '200':
-          description: 'Succes change password'
+          description: Succes change password
           schema:
             $ref: '#/definitions/Success'
-        
         '400':
           description: BAD REQUEST
           schema:
@@ -276,9 +268,44 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'          
-          
-            
+            $ref: '#/definitions/ErrorUnAuthorized'
+  
+  /rest-auth/facebook/:
+    post:
+      summary: Create a new user with his Facebook account
+      description: >
+        If the user is not registered you need to pass the username field otherwise you will have an error.
+        The application code is 1011661268854723 (you can find it with the user locsapp in the django admin or on Facebook).
+        For the access token you have to ask to facebook see the Facebook documentation or you can have a token here for
+        your test https://developers.facebook.com/tools/explorer/
+      
+      parameters:
+        - name: access_token
+          in: body
+          required: true
+          type: string
+        - name: code
+          in: body
+          required: true
+          type: string
+        - name: username
+          in: body
+          required: false
+          type: string
+      tags:
+        - Users
+        - Token
+        - Facebook
+      responses:
+        '200':
+          description: Succes change password
+          schema:
+            $ref: '#/definitions/Key'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/NonFieldErrors'
+     
 definitions:
   Key:
     type: object
@@ -318,13 +345,11 @@ definitions:
         type: boolean
       role:
         type: string
-        
   Success:
     type: object
     properties:
       success:
-        type: string      
-  
+        type: string
   PasswordChangeError:
     type: object
     properties:
@@ -334,15 +359,11 @@ definitions:
         type: array
       new_password2:
         type: array
-  
-        
-  
   PasswordResetError:
     type: object
     properties:
       email:
         type: array
-        
   PasswordResetConfirmError:
     type: object
     properties:
@@ -353,9 +374,7 @@ definitions:
       uid:
         type: array
       token:
-        type: array  
-  
-        
+        type: array
   ErrorUnAuthorized:
     type: object
     properties:
@@ -369,7 +388,7 @@ definitions:
         type: array
       username:
         type: array
-  ErrorLogin1:
+  NonFieldErrors:
     type: object
     properties:
       non_field_errors:
