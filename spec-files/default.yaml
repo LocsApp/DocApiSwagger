@@ -269,16 +269,16 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-  
   /rest-auth/facebook/:
     post:
       summary: Create a new user with his Facebook account
       description: >
-        If the user is not registered you need to pass the username field otherwise you will have an error.
-        The application code is 1011661268854723 (you can find it with the user locsapp in the django admin or on Facebook).
-        For the access token you have to ask to facebook see the Facebook documentation or you can have a token here for
-        your test https://developers.facebook.com/tools/explorer/
-      
+        If the user is not registered you need to pass the username field
+        otherwise you will have an error. The application code is
+        1011661268854723 (you can find it with the user locsapp in the django
+        admin or on Facebook). For the access token you have to ask to facebook
+        see the Facebook documentation or you can have a token here for your test
+        https://developers.facebook.com/tools/explorer/
       parameters:
         - name: access_token
           in: body
@@ -305,7 +305,321 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: '#/definitions/NonFieldErrors'
-     
+  
+  /user/add-email/:
+    post:
+      summary: Add a new mail in the secondary_email field
+      description: >
+        A user can have several emails. When he add a new address mail a confirmation
+        email is sent.
+        You can also use this endpoint to resend a mail confirmation.
+      parameters:
+        - name: new_email
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Token
+        - Email
+      responses:
+        '200':
+          description: Succes add email
+          schema:
+            $ref: '#/definitions/SucessEmail'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+  /user/delete-email/:
+    post:
+      summary: Delete email in the secondary_email field
+      description: >
+        nothing to say
+      parameters:
+        - name: email
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Token
+        - Email
+      responses:
+        '200':
+          description: Succes delete secondary email
+          schema:
+            $ref: '#/definitions/SucessEmail'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+  /user/set-primary-email/:
+    post:
+      summary: Set the primary email
+      description: >
+        nothing to say
+      parameters:
+        - name: email
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Token
+        - Email
+      responses:
+        '200':
+          description: Succes change primary email
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+            
+  /user/userId/living_addresses/:
+    post:
+      summary: >
+        Create a new living address. For know which JSON to pass to the post method
+        please see this link https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.bu2y3b2weni8
+      description: >
+        nothing to say
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Success add address
+          schema:
+            $ref: '#/definitions/User'
+        '40x':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'          
+    
+    get:
+      summary: Get living address for an user 
+      description: >
+        nothing to say
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Succes get living address
+          schema:
+            $ref: '#/definitions/SuccessLivingAddress'
+        '40x':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+  /user/userId/living_addresses/delete/:
+    post:
+      summary: Delete a living addresses
+      description: >
+         You have to pass the same JSON from the POST at the route
+         /user/userID/living_addresses/
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Succes delete living address
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'          
+  /user/userId/billing_addresses/:
+    post:
+      summary: >
+        Create a new billing address. For know which JSON to pass to the post method
+        please see this link https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.4uj0q6ixe0mi
+      description: >
+        nothing to say
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Success add billing address
+          schema:
+            $ref: '#/definitions/User'
+        '40x':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'          
+    
+    get:
+      summary: Get a billing address for an user
+      description: >
+        nothing to say
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Succes get living address
+          schema:
+            $ref: '#/definitions/SuccessBillingAddress'
+        '40x':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+  /user/userId/billing_addresses/delete/:
+    post:
+      summary: Delete a billing addresses
+      description: >
+        You have to pass the same JSON from the POST at the route
+         /user/userID/billing_addresses/
+      tags:
+        - Users
+        - Token
+        - Address
+      responses:
+        '200':
+          description: Succes delete billing address
+          schema:
+            $ref: '#/definitions/User'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                    
+            
+            
+  /notifications/noficationId/:
+    get:
+      summary: Get an user notification
+      description: >
+        nothing to say
+      tags:
+        - Users
+        - Token
+        - Notification
+      responses:
+        '200':
+          description: Get a user notification by id
+          schema:
+            $ref: '#/definitions/Notification'
+        '40*':
+          description: NOT FOUND
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+            
+    put:
+      summary: Modify a notification
+      description: >
+        nothing to say
+      parameters:
+        - name: read
+          in: body
+          required: true
+          type: boolean  
+        - name: visible
+          in: body
+          required: true
+          type: boolean
+        - name: user_id
+          in: body
+          required: true
+          type: integer
+        - name: type
+          in: body
+          required: true
+          type: string
+        - name: state_url
+          in: body
+          required: true
+          type: string 
+        - name: content
+          in: body
+          required: true
+          type: string   
+      tags:
+        - Users
+        - Token
+        - Notification
+      responses:
+        '200':
+          description: Put a user notification by id
+          schema:
+            $ref: '#/definitions/SuccessGeneral'
+        '40*':
+          description: NOT FOUND
+          schema:
+            $ref: '#/definitions/ErrorGeneral'        
+
+  /userId/nofications/:
+    get:
+      summary: Get all notification for one user
+      description: >
+        It is the same from the precedente route except you get all the notification of one user
+        and it is an array. To see an example of the JSON go here https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.yekxlnmnb27v
+      tags:
+        - Users
+        - Token
+        - Notification
+      responses:
+        '200':
+          description: Get all the notifications for a user
+          schema:
+            $ref: '#/definitions/NotificationArray'
+        '40*':
+          description: NOT FOUND
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+    post:
+      summary: Post a notification for an user
+      description: >
+        nothing to say
+      parameters:
+        - name: type
+          in: body
+          required: true
+          type: string
+        - name: content
+          in: body
+          required: true
+          type: string
+        - name: state_url
+          in: body
+          required: true
+          type: string  
+        - name: read
+          in: body
+          required: true
+          type: boolean
+        - name: visible
+          in: body
+          required: true
+          type: boolean
+        - name: userId
+          in: body
+          required: true
+          type: integer
+      tags:
+        - Users
+        - Token
+        - Notification
+      responses:
+        '200':
+          description: Get all the notifications for a user
+          schema:
+            $ref: '#/definitions/SuccessGeneral'
+        '40*':
+          description: NOT FOUND
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                          
+            
+            
+            
 definitions:
   Key:
     type: object
@@ -398,3 +712,79 @@ definitions:
     properties:
       password:
         type: array
+  
+  ErrorGeneral:
+    type: object
+    properties:
+      message:
+        type: string
+        
+  SuccessGeneral:
+    type: object
+    properties:
+      message:
+        type: string
+  
+  SucessEmail:
+    type: object
+    properties:
+      message:
+        type: string
+        
+  SuccessLivingAddress:
+    type: object
+    properties:
+      living_address:
+        type: array
+        
+  SuccessLivingAddress:
+    type: object
+    properties:
+      billing_address:
+        type: array      
+        
+    
+  Notification:
+    type: object
+    properties:
+      read:
+        type: boolean
+      _id:
+        type: string
+      visible:
+        type: boolean
+      type:
+        type: string
+      state_url:
+        type: string
+      user_id:
+        type: integer
+      date:
+        type: string
+      content:
+        type: string
+      
+      
+  NotificationArray:
+    type: array
+    properties:
+      read:
+        type: boolean
+      _id:
+        type: string
+      visible:
+        type: boolean
+      type:
+        type: string
+      state_url:
+        type: string
+      user_id:
+        type: integer
+      date:
+        type: string
+      content:
+        type: string
+          
+        
+      
+        
