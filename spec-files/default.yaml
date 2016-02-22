@@ -273,12 +273,12 @@ paths:
     post:
       summary: Create a new user with his Facebook account
       description: >
-        If the user is not registered you need to pass the username field
-        otherwise you will have an error. The application code is
+        . The application code is
         1011661268854723 (you can find it with the user locsapp in the django
         admin or on Facebook). For the access token you have to ask to facebook
         see the Facebook documentation or you can have a token here for your test
         https://developers.facebook.com/tools/explorer/
+        For more information on how to use it with our API see https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/
       parameters:
         - name: access_token
           in: body
@@ -287,10 +287,6 @@ paths:
         - name: code
           in: body
           required: true
-          type: string
-        - name: username
-          in: body
-          required: false
           type: string
       tags:
         - Users
@@ -305,14 +301,37 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: '#/definitions/NonFieldErrors'
-  
+  /auth/change-username/:
+    post:
+      summary: Change the username of an user who have an empty username
+      description: >
+        When an user connect to Facebook his username is not set yet.
+        So you need to call this route to change to a correct username
+      parameters:
+        - name: username
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Token
+        - Facebook
+      responses:
+        '200':
+          description: Succes add email
+          schema:
+            $ref: '#/definitions/SucessEmail'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
   /user/add-email/:
     post:
       summary: Add a new mail in the secondary_email field
       description: >
-        A user can have several emails. When he add a new address mail a confirmation
-        email is sent.
-        You can also use this endpoint to resend a mail confirmation.
+        A user can have several emails. When he add a new address mail
+        a confirmation email is sent. You can also use this endpoint to resend
+        a mail confirmation.
       parameters:
         - name: new_email
           in: body
@@ -334,7 +353,7 @@ paths:
   /user/delete-email/:
     post:
       summary: Delete email in the secondary_email field
-      description: >
+      description: |
         nothing to say
       parameters:
         - name: email
@@ -357,7 +376,7 @@ paths:
   /user/set-primary-email/:
     post:
       summary: Set the primary email
-      description: >
+      description: |
         nothing to say
       parameters:
         - name: email
@@ -377,13 +396,13 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
   /user/userId/living_addresses/:
     post:
       summary: >
-        Create a new living address. For know which JSON to pass to the post method
-        please see this link https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.bu2y3b2weni8
-      description: >
+        Create a new living address. For know which JSON to pass to the post
+        method please see this link
+        https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.bu2y3b2weni8
+      description: |
         nothing to say
       tags:
         - Users
@@ -394,14 +413,13 @@ paths:
           description: Success add address
           schema:
             $ref: '#/definitions/User'
-        '40x':
+        40x:
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'          
-    
+            $ref: '#/definitions/ErrorGeneral'
     get:
-      summary: Get living address for an user 
-      description: >
+      summary: Get living address for an user
+      description: |
         nothing to say
       tags:
         - Users
@@ -412,7 +430,7 @@ paths:
           description: Succes get living address
           schema:
             $ref: '#/definitions/SuccessLivingAddress'
-        '40x':
+        40x:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorGeneral'
@@ -420,8 +438,8 @@ paths:
     post:
       summary: Delete a living addresses
       description: >
-         You have to pass the same JSON from the POST at the route
-         /user/userID/living_addresses/
+        You have to pass the same JSON from the POST at the route
+        /user/userID/living_addresses/
       tags:
         - Users
         - Token
@@ -434,13 +452,14 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'          
+            $ref: '#/definitions/ErrorGeneral'
   /user/userId/billing_addresses/:
     post:
       summary: >
-        Create a new billing address. For know which JSON to pass to the post method
-        please see this link https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.4uj0q6ixe0mi
-      description: >
+        Create a new billing address. For know which JSON to pass to the post
+        method please see this link
+        https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.4uj0q6ixe0mi
+      description: |
         nothing to say
       tags:
         - Users
@@ -451,14 +470,13 @@ paths:
           description: Success add billing address
           schema:
             $ref: '#/definitions/User'
-        '40x':
+        40x:
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'          
-    
+            $ref: '#/definitions/ErrorGeneral'
     get:
       summary: Get a billing address for an user
-      description: >
+      description: |
         nothing to say
       tags:
         - Users
@@ -469,14 +487,14 @@ paths:
           description: Succes get living address
           schema:
             $ref: '#/definitions/SuccessBillingAddress'
-        '40x':
+        40x:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorGeneral'
   /user/userId/billing_addresses/delete/:
     post:
       summary: Delete a billing addresses
-      description: >
+      description: |
         You have to pass the same JSON from the POST at the route
          /user/userID/billing_addresses/
       tags:
@@ -491,13 +509,11 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'                    
-            
-            
+            $ref: '#/definitions/ErrorGeneral'
   /notifications/noficationId/:
     get:
       summary: Get an user notification
-      description: >
+      description: |
         nothing to say
       tags:
         - Users
@@ -512,16 +528,15 @@ paths:
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
     put:
       summary: Modify a notification
-      description: >
+      description: |
         nothing to say
       parameters:
         - name: read
           in: body
           required: true
-          type: boolean  
+          type: boolean
         - name: visible
           in: body
           required: true
@@ -537,11 +552,11 @@ paths:
         - name: state_url
           in: body
           required: true
-          type: string 
+          type: string
         - name: content
           in: body
           required: true
-          type: string   
+          type: string
       tags:
         - Users
         - Token
@@ -554,14 +569,15 @@ paths:
         '40*':
           description: NOT FOUND
           schema:
-            $ref: '#/definitions/ErrorGeneral'        
-
+            $ref: '#/definitions/ErrorGeneral'
   /userId/nofications/:
     get:
       summary: Get all notification for one user
       description: >
-        It is the same from the precedente route except you get all the notification of one user
-        and it is an array. To see an example of the JSON go here https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.yekxlnmnb27v
+        It is the same from the precedente route except you get all the
+        notification of one user and it is an array. To see an example of the
+        JSON go here
+        https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/edit#heading=h.yekxlnmnb27v
       tags:
         - Users
         - Token
@@ -577,7 +593,7 @@ paths:
             $ref: '#/definitions/ErrorGeneral'
     post:
       summary: Post a notification for an user
-      description: >
+      description: |
         nothing to say
       parameters:
         - name: type
@@ -591,7 +607,7 @@ paths:
         - name: state_url
           in: body
           required: true
-          type: string  
+          type: string
         - name: read
           in: body
           required: true
@@ -616,10 +632,7 @@ paths:
         '40*':
           description: NOT FOUND
           schema:
-            $ref: '#/definitions/ErrorGeneral'                          
-            
-            
-            
+            $ref: '#/definitions/ErrorGeneral'
 definitions:
   Key:
     type: object
@@ -712,38 +725,26 @@ definitions:
     properties:
       password:
         type: array
-  
   ErrorGeneral:
     type: object
     properties:
       message:
         type: string
-        
   SuccessGeneral:
     type: object
     properties:
       message:
         type: string
-  
   SucessEmail:
     type: object
     properties:
       message:
         type: string
-        
-  SuccessLivingAddress:
-    type: object
-    properties:
-      living_address:
-        type: array
-        
   SuccessLivingAddress:
     type: object
     properties:
       billing_address:
-        type: array      
-        
-    
+        type: array
   Notification:
     type: object
     properties:
@@ -763,8 +764,6 @@ definitions:
         type: string
       content:
         type: string
-      
-      
   NotificationArray:
     type: array
     properties:
@@ -784,7 +783,3 @@ definitions:
         type: string
       content:
         type: string
-          
-        
-      
-        
