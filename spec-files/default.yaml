@@ -269,45 +269,20 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-  /rest-auth/facebook/:
+  /rest-auth/facebook-register/:
     post:
       summary: Create a new user with his Facebook account
       description: >
-        . The application code is
-        1011661268854723 (you can find it with the user locsapp in the django
-        admin or on Facebook). For the access token you have to ask to facebook
-        see the Facebook documentation or you can have a token here for your test
+        . The application code is 1011661268854723 (you can find it with the user
+        locsapp in the django admin or on Facebook). For the access token you
+        have to ask to facebook see the Facebook documentation or you can have
+        a token here for your test
         https://developers.facebook.com/tools/explorer/
-        For more information on how to use it with our API see https://docs.google.com/document/d/18eKXXRaQT0eo1BpAGzZrMGphYfuM4W_Ox8g5WD3Pm6U/
       parameters:
-        - name: access_token
+        - name: facebook_token
           in: body
           required: true
           type: string
-        - name: code
-          in: body
-          required: true
-          type: string
-      tags:
-        - Users
-        - Token
-        - Facebook
-      responses:
-        '200':
-          description: Succes change password
-          schema:
-            $ref: '#/definitions/Key'
-        '400':
-          description: BAD REQUEST
-          schema:
-            $ref: '#/definitions/NonFieldErrors'
-  /auth/change-username/:
-    post:
-      summary: Change the username of an user who have an empty username
-      description: >
-        When an user connect to Facebook his username is not set yet.
-        So you need to call this route to change to a correct username
-      parameters:
         - name: username
           in: body
           required: true
@@ -316,15 +291,52 @@ paths:
         - Users
         - Token
         - Facebook
+        - Register
       responses:
         '200':
-          description: Succes add email
+          description: Success register user with his Facebook
           schema:
-            $ref: '#/definitions/SucessEmail'
+            $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+  /rest-auth/facebook-login/:
+    post:
+      summary: Create a new user with his Facebook account
+      description: >
+        . The application code is 1011661268854723 (you can find it with the user
+        locsapp in the django admin or on Facebook). For the access token you
+        have to ask to facebook see the Facebook documentation or you can have
+        a token here for your test
+        https://developers.facebook.com/tools/explorer/
+      parameters:
+        - name: facebook_token
+          in: body
+          required: true
+          type: string
+        - name: username
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Token
+        - Facebook
+        - Login
+      responses:
+        '200':
+          description: Succes change password
+          schema:
+            $ref: '#/definitions/Key'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/ErrorGeneral'          
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'
+            $ref: '#/definitions/ErrorGeneral'              
   /user/add-email/:
     post:
       summary: Add a new mail in the secondary_email field
