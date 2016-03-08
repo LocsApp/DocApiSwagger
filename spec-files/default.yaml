@@ -315,10 +315,6 @@ paths:
           in: body
           required: true
           type: string
-        - name: username
-          in: body
-          required: true
-          type: string
       tags:
         - Users
         - Token
@@ -332,11 +328,11 @@ paths:
         '400':
           description: BAD REQUEST
           schema:
-            $ref: '#/definitions/ErrorGeneral'          
+            $ref: '#/definitions/ErrorGeneral'
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorGeneral'              
+            $ref: '#/definitions/ErrorGeneral'
   /user/add-email/:
     post:
       summary: Add a new mail in the secondary_email field
