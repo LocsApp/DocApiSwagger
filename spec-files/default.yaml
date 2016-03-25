@@ -269,7 +269,7 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-  /rest-auth/facebook-register/:
+  /auth/facebook-register/:
     post:
       summary: Create a new user with his Facebook account
       description: >
@@ -301,7 +301,7 @@ paths:
           description: BAD REQUEST
           schema:
             $ref: '#/definitions/ErrorGeneral'
-  /rest-auth/facebook-login/:
+  /auth/facebook-login/:
     post:
       summary: Create a new user with his Facebook account
       description: >
