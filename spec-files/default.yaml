@@ -578,6 +578,24 @@ paths:
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
+  /search/articles/:
+    post:
+      summary: This endpoints serves the searching of articles depending on a configured schema sent to the endpoint.
+      description: >
+        This is the search endpoint for the articles. It handles pagination, sorting, and array filters.
+        Some fields don't follow the same patterns as the others, but for most of them it is array filters.
+      tags:
+        - Articles
+        - Token
+      responses:
+        '200':
+          description: Get the articles asked in the schema.
+          schema:
+            $ref: '#/definitions/ArticlesArray'
+        '40*':
+          description: NOT FOUND
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
   /userId/nofications/:
     get:
       summary: Get all notification for one user
@@ -791,3 +809,21 @@ definitions:
         type: string
       content:
         type: string
+  ArticlesSearchSchema:
+    type: object
+    properties:
+      metadatas:
+        type:object
+        properties:
+          page_number:
+            type: integer
+          total_paged:
+            type: integer
+      articles:
+        type:array
+        properties:
+          _id:
+            type: string
+
+
+
