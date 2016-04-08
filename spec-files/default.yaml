@@ -982,5 +982,5 @@ definitions:
         type: array
         properties:
           _id:
-            type: string    
+            type: string   
         
