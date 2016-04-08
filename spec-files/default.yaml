@@ -925,6 +925,7 @@ definitions:
         type: string
       content:
         type: string
+    
   Article:
     type: object
     properties:
@@ -964,3 +965,22 @@ definitions:
         type: string
       base_category:
         type: ObjectId
+
+
+
+  ArticlesSearchSchema:
+    type: object
+    properties:
+      metadatas:
+        type: object
+        properties:
+          page_number:
+            type: integer
+          total_paged:
+            type: integer
+      articles:
+        type: array
+        properties:
+          _id:
+            type: string    
+        
