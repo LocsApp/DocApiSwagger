@@ -582,8 +582,9 @@ paths:
     post:
       summary: This endpoints serves the searching of articles depending on a configured schema sent to the endpoint.
       description: >
-        This is the search endpoint for the articles. It handles pagination, sorting, and array filters.
-        Some fields don't follow the same patterns as the others, but for most of them it is array filters.
+        This is the search endpoint for the articles. It handles pagination,
+        sorting, and array filters. Some fields don't follow the same patterns as
+        the others, but for most of them it is array filters.
       tags:
         - Articles
         - Token
@@ -596,6 +597,121 @@ paths:
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
+  '/articles/:id':
+    get:
+      summary: Get an article with its id
+      description: |
+        nothing to say
+      tags:
+        - Articles
+      responses:
+        '200':
+          description: Succes getting the artcile
+          schema:
+            $ref: '#/definitions/Article'
+        40x:
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+            
+            
+  
+  /articles/create/:
+    post:
+      summary: Create an article
+      description: >
+        Nothing to say
+      parameters:
+        - name: title
+          in: body
+          description: Title of this artcle
+          required: true
+          type: string
+        - name: base_category
+          in: body
+          description: Category of article 
+          required: true
+          type: ObjectId
+        - name: sub_category
+          in: body
+          description: 
+          required: true
+          type: ObjectId
+        - name: gender
+          in: body
+          description: 
+          required: true
+          type: ObjectId
+        - name : size
+          in: body
+          required: true
+          type: ObjectId
+        - name : color
+          in: body
+          required: true
+          type: ObjectId
+        - name : clote_condition
+          in: body
+          required: true
+          type: ObjectId
+        - name : brand
+          in: body
+          required: true
+          type: ObjectId
+        - name : description
+          in: body
+          required: true
+          type: string
+        - name : price
+          in: body
+          required: true
+          type: int  
+        - name : payment_methods
+          in: body
+          required: true
+          type: ObjectId array
+        - name : availibility_start
+          in: body
+          required: true
+          type: string
+        - name : availibility_end
+          in: body
+          required: true
+          type: string  
+        - name : url_pictures
+          in: body
+          required: true
+          type: array string
+        - name : url_thumbnail
+          in: body
+          required: true
+          type: string  
+          
+        
+      tags:
+        - Articles
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'
+  
+  
+            
+ 
+ 
+ 
+ 
   /userId/nofications/:
     get:
       summary: Get all notification for one user
@@ -809,21 +925,42 @@ definitions:
         type: string
       content:
         type: string
-  ArticlesSearchSchema:
+  Article:
     type: object
     properties:
-      metadatas:
-        type:object
-        properties:
-          page_number:
-            type: integer
-          total_paged:
-            type: integer
-      articles:
-        type:array
-        properties:
-          _id:
-            type: string
-
-
-
+      _id:
+        type: objectId
+      gender:
+        type: objectId
+      payment_methods:
+        type: array ObjectId
+      brand:
+        type: ObjectId
+      color:
+        type: OjectId
+      creation_date:
+        type: isodate
+      clothe_condition:
+        type: ObjectId
+      size:
+        type: ObjectId
+      availibility_start:
+        type: string
+      availibility_end:
+        type: string
+      url_thumbnail:
+        type: string
+      sub_category:
+        type: ObjectId
+      id_author:
+        type: number id
+      description:
+        type: html
+      price:
+        type: int
+      url_pictures:
+        type: array url
+      title:
+        type: string
+      base_category:
+        type: ObjectId
