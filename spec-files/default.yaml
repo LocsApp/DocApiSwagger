@@ -613,13 +613,10 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-            
-  
   /articles/create/:
     post:
       summary: Create an article
-      description: >
+      description: |
         Nothing to say
       parameters:
         - name: title
@@ -629,65 +626,63 @@ paths:
           type: string
         - name: base_category
           in: body
-          description: Category of article 
+          description: Category of article
           required: true
           type: ObjectId
         - name: sub_category
           in: body
-          description: 
+          description: null
           required: true
           type: ObjectId
         - name: gender
           in: body
-          description: 
+          description: null
           required: true
           type: ObjectId
-        - name : size
+        - name: size
           in: body
           required: true
           type: ObjectId
-        - name : color
+        - name: color
           in: body
           required: true
           type: ObjectId
-        - name : clote_condition
+        - name: clote_condition
           in: body
           required: true
           type: ObjectId
-        - name : brand
+        - name: brand
           in: body
           required: true
           type: ObjectId
-        - name : description
+        - name: description
           in: body
           required: true
           type: string
-        - name : price
+        - name: price
           in: body
           required: true
-          type: int  
-        - name : payment_methods
+          type: int
+        - name: payment_methods
           in: body
           required: true
           type: ObjectId array
-        - name : availibility_start
+        - name: availibility_start
           in: body
           required: true
           type: string
-        - name : availibility_end
+        - name: availibility_end
           in: body
           required: true
-          type: string  
-        - name : url_pictures
+          type: string
+        - name: url_pictures
           in: body
           required: true
           type: array string
-        - name : url_thumbnail
+        - name: url_thumbnail
           in: body
           required: true
-          type: string  
-          
-        
+          type: string
       tags:
         - Articles
       responses:
@@ -705,13 +700,6 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-  
-  
-            
- 
- 
- 
- 
   /userId/nofications/:
     get:
       summary: Get all notification for one user
@@ -768,13 +756,127 @@ paths:
         - Notification
       responses:
         '200':
-          description: Get all the notifications for a user
+          description: Get all the categories
           schema:
             $ref: '#/definitions/SuccessGeneral'
         '40*':
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
+            
+  /static-collections/sub-categories/:    
+    get:
+      summary: Get the all the sub categories
+      description: >
+      tags:
+        - Static Collections
+        - Sub Category
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+            
+  /static-collections/base-categories/:    
+    get:
+      summary: Get the categories
+      description: >
+      tags:
+        - Static Collections
+        - Category
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'      
+            
+  /static-collections/genders/:    
+    get:
+      summary: Get the all the gender categories
+      description: >
+      tags:
+        - Static Collections
+        - Gender
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+            
+  /static-collections/sizes/:    
+    get:
+      summary: Get the all the sizes categories
+      description: >
+      tags:
+        - Static Collections
+        - Size
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'          
+            
+  /static-collections/clothe-colors/:    
+    get:
+      summary: Get the all the clothe color categories
+      description: >
+      tags:
+        - Static Collections
+        - Clothe Color
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                    
+            
+  /static-collections/clothe-states/:    
+    get:
+      summary: Get the all the clothe state categories
+      description: >
+      tags:
+        - Static Collections
+        - Clothe States
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'      
+            
+  /static-collections/payment-methods/:    
+    get:
+      summary: Get the all the clothe state categories
+      description: >
+      tags:
+        - Static Collections
+        - Payment Methods
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                
+            
+            
 definitions:
   Key:
     type: object
@@ -925,7 +1027,6 @@ definitions:
         type: string
       content:
         type: string
-    
   Article:
     type: object
     properties:
@@ -965,9 +1066,14 @@ definitions:
         type: string
       base_category:
         type: ObjectId
-
-
-
+  Fixture:
+    type: array
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+          
   ArticlesSearchSchema:
     type: object
     properties:
@@ -982,5 +1088,4 @@ definitions:
         type: array
         properties:
           _id:
-            type: string   
-        
+            type: string
