@@ -763,11 +763,10 @@ paths:
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-  /static-collections/sub-categories/:    
+  /static-collections/sub-categories/:
     get:
       summary: Get the all the sub categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Sub Category
@@ -779,11 +778,10 @@ paths:
           description: Method not allowed
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-  /static-collections/base-categories/:    
+  /static-collections/base-categories/:
     get:
       summary: Get the categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Category
@@ -794,12 +792,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'      
-            
-  /static-collections/genders/:    
+            $ref: '#/definitions/ErrorGeneral'
+  /static-collections/genders/:
     get:
       summary: Get the all the gender categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Gender
@@ -811,11 +808,10 @@ paths:
           description: Method not allowed
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-  /static-collections/sizes/:    
+  /static-collections/sizes/:
     get:
       summary: Get the all the sizes categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Size
@@ -826,12 +822,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'          
-            
-  /static-collections/clothe-colors/:    
+            $ref: '#/definitions/ErrorGeneral'
+  /static-collections/clothe-colors/:
     get:
       summary: Get the all the clothe color categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Clothe Color
@@ -842,12 +837,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'                    
-            
-  /static-collections/clothe-states/:    
+            $ref: '#/definitions/ErrorGeneral'
+  /static-collections/clothe-states/:
     get:
       summary: Get the all the clothe state categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Clothe States
@@ -858,12 +852,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'      
-            
-  /static-collections/payment-methods/:    
+            $ref: '#/definitions/ErrorGeneral'
+  /static-collections/payment-methods/:
     get:
       summary: Get the all the clothe state categories
-      description: >
+      description: ''
       tags:
         - Static Collections
         - Payment Methods
@@ -874,8 +867,179 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'                
+            $ref: '#/definitions/ErrorGeneral'
             
+            
+  /articles/questions/:
+    post:
+      summary: Send a question about an article
+      description: | 
+        PAY ATTENTION: For other route when you use the id question it's the field id from the question document and not _id
+      parameters:
+        - name: content
+          in: body
+          description: The question 
+          required: true
+          type: string
+        - name: id_article
+          in: body
+          description: Id of the article the user is asking a question
+          required: true
+          type: string  
+ 
+      tags:
+        - Articles
+        - Question
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'      
+            
+  /articles/answers/:
+    post:
+      summary: Send an answer about a question on  an article
+      description: | 
+      parameters:
+        - name: response
+          in: body
+          description: The answer of the question
+          required: true
+          type: string
+        - name: id_question
+          in: body
+          description: The id of the question the user is answering
+          required: true
+          type: string  
+ 
+      tags:
+        - Articles
+        - Question
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'         
+            
+            
+  /articles/upvote/:
+    post:
+      summary: Upvote a question an user can only upvote once a question
+      description: | 
+      parameters:
+        - name: id_question
+          in: body
+          description: The id of the question the user is upvoting
+          required: true
+          type: string  
+ 
+      tags:
+        - Articles
+        - Question
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'             
+            
+            
+  /articles/report-question/:
+    post:
+      summary: Report a question an user can only report once a question
+      description: | 
+      parameters:
+        - name: id_question
+          in: body
+          description: The id of the question the user is reporting
+          required: true
+          type: string  
+ 
+      tags:
+        - Articles
+        - Question
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SuccessGeneral'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorGeneral'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'      
+            
+            
+  /articles/articles-with-question-to-answer/:
+    get:
+      summary: Get the articles where the current user needs to answer
+      description: |
+        This route will send you an array of article (the actual response 200 is wrong in this documentation)
+      tags:
+        - Articles
+        - Questions
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'            
+            
+            
+  /articles//articles-with-question-asked/:
+    get:
+      summary: Get the articles where the current user sent questions
+      description: |
+        This route will send you an array of article (the actual response 200 is wrong in this documentation)
+      tags:
+        - Articles
+        - Questions
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Fixture'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                    
+            
+
             
 definitions:
   Key:
@@ -1073,7 +1237,6 @@ definitions:
         type: string
       name:
         type: string
-          
   ArticlesSearchSchema:
     type: object
     properties:
