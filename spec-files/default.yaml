@@ -868,25 +868,23 @@ paths:
           description: Method not allowed
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-            
   /articles/questions/:
     post:
       summary: Send a question about an article
-      description: | 
-        PAY ATTENTION: For other route when you use the id question it's the field id from the question document and not _id
+      description: >
+        PAY ATTENTION: For other route when you use the id question it's the
+        field id from the question document and not _id
       parameters:
         - name: content
           in: body
-          description: The question 
+          description: The question
           required: true
           type: string
         - name: id_article
           in: body
           description: Id of the article the user is asking a question
           required: true
-          type: string  
- 
+          type: string
       tags:
         - Articles
         - Question
@@ -904,12 +902,11 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'      
-            
+            $ref: '#/definitions/ErrorUnAuthorized'
   /articles/answers/:
     post:
       summary: Send an answer about a question on  an article
-      description: | 
+      description: ''
       parameters:
         - name: response
           in: body
@@ -920,8 +917,7 @@ paths:
           in: body
           description: The id of the question the user is answering
           required: true
-          type: string  
- 
+          type: string
       tags:
         - Articles
         - Question
@@ -939,20 +935,17 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'         
-            
-            
+            $ref: '#/definitions/ErrorUnAuthorized'
   /articles/upvote/:
     post:
       summary: Upvote a question an user can only upvote once a question
-      description: | 
+      description: ''
       parameters:
         - name: id_question
           in: body
           description: The id of the question the user is upvoting
           required: true
-          type: string  
- 
+          type: string
       tags:
         - Articles
         - Question
@@ -970,20 +963,17 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'             
-            
-            
+            $ref: '#/definitions/ErrorUnAuthorized'
   /articles/report-question/:
     post:
       summary: Report a question an user can only report once a question
-      description: | 
+      description: ''
       parameters:
         - name: id_question
           in: body
           description: The id of the question the user is reporting
           required: true
-          type: string  
- 
+          type: string
       tags:
         - Articles
         - Question
@@ -1001,14 +991,13 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'      
-            
-            
+            $ref: '#/definitions/ErrorUnAuthorized'
   /articles/articles-with-question-to-answer/:
     get:
       summary: Get the articles where the current user needs to answer
-      description: |
-        This route will send you an array of article (the actual response 200 is wrong in this documentation)
+      description: >
+        This route will send you an array of article (the actual response 200 is
+        wrong in this documentation)
       tags:
         - Articles
         - Questions
@@ -1019,14 +1008,13 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'            
-            
-            
+            $ref: '#/definitions/ErrorGeneral'
   /articles//articles-with-question-asked/:
     get:
       summary: Get the articles where the current user sent questions
-      description: |
-        This route will send you an array of article (the actual response 200 is wrong in this documentation)
+      description: >
+        This route will send you an array of article (the actual response 200 is
+        wrong in this documentation)
       tags:
         - Articles
         - Questions
@@ -1037,9 +1025,92 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'                    
+            $ref: '#/definitions/ErrorGeneral'
             
-
+            
+  /api/v1/favorites/articles/:
+    post:
+      summary: Add an article to your favorite
+      description: >
+        
+      parameters:
+        - id_article: Article ID
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Favorite
+        - Article
+      responses:
+        '200':
+          description: Message
+          schema:
+            $ref: '#/definitions/Success'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordResetError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'      
+    get:
+      summary: Get all favorite articles
+      description: >
+        
+      parameters:
+        - id_article: Article ID
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Favorite
+        - Article
+      responses:
+        '200':
+          description: Array of articles
+          schema:
+            $ref: '#/definitions/Success'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordResetError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'              
+            
+            
+  
+  /api/v1/favorites/delete-articles/:
+    post:
+      summary: Delete an article from your favorite
+      description: >
+        
+      parameters:
+        - id_article: Article ID
+          in: body
+          required: true
+          type: string
+      tags:
+        - Users
+        - Favorite
+        - Article
+      responses:
+        '200':
+          description: Send message
+          schema:
+            $ref: '#/definitions/Success'
+        '400':
+          description: BAD REQUEST
+          schema:
+            $ref: '#/definitions/PasswordResetError'
+        '401':
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/ErrorUnAuthorized'               
             
 definitions:
   Key:
