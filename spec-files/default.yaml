@@ -1026,13 +1026,10 @@ paths:
           description: Method not allowed
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
-            
   /api/v1/favorites/articles/:
     post:
       summary: Add an article to your favorite
-      description: >
-        
+      description: ''
       parameters:
         - id_article: Article ID
           in: body
@@ -1054,11 +1051,10 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'      
+            $ref: '#/definitions/ErrorUnAuthorized'
     get:
       summary: Get all favorite articles
-      description: >
-        
+      description: ''
       parameters:
         - id_article: Article ID
           in: body
@@ -1080,15 +1076,11 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'              
-            
-            
-  
+            $ref: '#/definitions/ErrorUnAuthorized'
   /api/v1/favorites/delete-articles/:
     post:
       summary: Delete an article from your favorite
-      description: >
-        
+      description: ''
       parameters:
         - id_article: Article ID
           in: body
@@ -1110,7 +1102,79 @@ paths:
         '401':
           description: UNAUTHORIZED
           schema:
-            $ref: '#/definitions/ErrorUnAuthorized'               
+            $ref: '#/definitions/ErrorUnAuthorized'
+            
+
+  /articles/user-profile/:user_id/:
+    get:
+      summary: Get the first four recent articles of the user
+      description: >
+        This rounte send the first four article this user put in
+        renting. Only available articles and the most recent one.
+      tags:
+        - Articles
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/FourthedArticle'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral' 
+            
+            
+  /history/notations-profile/:user_id/:
+    get:
+      summary: Get the first four recent notations of the user
+      description: >
+        This rounte send the first four recent notations
+        this user has
+      tags:
+        - Notations
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/FourthedNotation'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'         
+            
+  /history/notations-as-client-pagination/:username/:id_page/:
+    get:
+      summary: Get all the notations the user received as a client
+      description: >
+        
+      tags:
+        - Notations
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/NotationAsClient'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral' 
+            
+  /history/notations-as-renter-pagination/:username/:id_page/:
+    get:
+      summary: Get all the notations the user received as a renter
+      description: >
+        
+      tags:
+        - Notations
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/NotationAsRenter'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                
             
 definitions:
   Key:
@@ -1308,6 +1372,42 @@ definitions:
         type: string
       name:
         type: string
+  FourthedArticle:
+    type: object
+    properties:
+      articles:
+        type: array
+      nb_total_articles:
+        type: int
+  FourthedNotation:
+    type: object
+    properties:
+      renter_notation:
+        type: array
+      nb_notation_renter:
+        type: int  
+      client_notation:
+        type: array
+      nb_notation_client:
+        type: int   
+  NotationAsClient:
+    type: object
+    properties:
+      average_mark:
+        type: int
+      notations_as_client:
+        type: array
+      nb_page:
+        type: int
+  NotationAsRenter:
+    type: object
+    properties:
+      average_mark:
+        type: int
+      notations_as_renter:
+        type: array
+      nb_page:
+        type: int        
   ArticlesSearchSchema:
     type: object
     properties:
