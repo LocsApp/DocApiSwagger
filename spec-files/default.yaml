@@ -1103,14 +1103,12 @@ paths:
           description: UNAUTHORIZED
           schema:
             $ref: '#/definitions/ErrorUnAuthorized'
-            
-
-  /articles/user-profile/:user_id/:
+  '/articles/user-profile/:user_id/':
     get:
       summary: Get the first four recent articles of the user
       description: >
-        This rounte send the first four article this user put in
-        renting. Only available articles and the most recent one.
+        This rounte send the first four article this user put in renting. Only
+        available articles and the most recent one.
       tags:
         - Articles
         - Users
@@ -1121,15 +1119,12 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral' 
-            
-            
-  /history/notations-profile/:user_id/:
+            $ref: '#/definitions/ErrorGeneral'
+  '/history/notations-profile/:user_id/':
     get:
       summary: Get the first four recent notations of the user
-      description: >
-        This rounte send the first four recent notations
-        this user has
+      description: |
+        This rounte send the first four recent notations this user has
       tags:
         - Notations
         - Users
@@ -1140,13 +1135,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'         
-            
-  /history/notations-as-client-pagination/:username/:id_page/:
+            $ref: '#/definitions/ErrorGeneral'
+  '/history/notations-as-client-pagination/:username/:id_page/':
     get:
       summary: Get all the notations the user received as a client
-      description: >
-        
+      description: ''
       tags:
         - Notations
         - Users
@@ -1157,13 +1150,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral' 
-            
-  /history/notations-as-renter-pagination/:username/:id_page/:
+            $ref: '#/definitions/ErrorGeneral'
+  '/history/notations-as-renter-pagination/:username/:id_page/':
     get:
       summary: Get all the notations the user received as a renter
-      description: >
-        
+      description: ''
       tags:
         - Notations
         - Users
@@ -1174,7 +1165,47 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'                
+            $ref: '#/definitions/ErrorGeneral'
+            
+  '/user/:username/':
+    get:
+      summary: Get an user for public use
+      description: > 
+             This route will use the living addresses in the user model.
+              If one of the two users does not have any living address than
+              the result of distance will be a str for value Unknown
+      tags:
+        - Public
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/UserPublic'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'     
+        
+  '/user/:username/:lat/:lng':
+    get:
+      summary: Get an user for public use
+      description: > 
+             This route will use the living address in the user model for
+             the user you are showing.
+              For the other user (the connected one) it will use the gps
+              coordonates.
+              If the first user does not have any living address the result of distance will be a str for value Unknown 
+      tags:
+        - Public
+        - Users
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/UserPublic'
+        '405':
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/ErrorGeneral'                   
             
 definitions:
   Key:
@@ -1183,6 +1214,27 @@ definitions:
       key:
         type: String
         description: Access Token
+        
+  UserPublic:
+    type: object
+    properties:
+      username:
+        type: string
+        description: Username of the user
+      birthdate:
+        type: string
+      registered_date:
+        type: string
+      last_activity_date:
+        type: string
+      logo_url:
+        type: string
+      is_active:
+        type: boolean
+      role:
+        type: string   
+      distance:
+        type: string        
   User:
     type: object
     properties:
@@ -1385,11 +1437,11 @@ definitions:
       renter_notation:
         type: array
       nb_notation_renter:
-        type: int  
+        type: int
       client_notation:
         type: array
       nb_notation_client:
-        type: int   
+        type: int
   NotationAsClient:
     type: object
     properties:
@@ -1407,7 +1459,7 @@ definitions:
       notations_as_renter:
         type: array
       nb_page:
-        type: int        
+        type: int
   ArticlesSearchSchema:
     type: object
     properties:
