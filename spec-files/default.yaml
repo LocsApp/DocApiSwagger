@@ -597,11 +597,15 @@ paths:
           description: NOT FOUND
           schema:
             $ref: '#/definitions/ErrorGeneral'
-  '/articles/:id':
+  'get/articles/:id':
     get:
       summary: Get an article with its id
       description: |
-        nothing to say
+        Use this route to full show an article, this route also provides you these others fields
+        - is_in_favorite (boolean) (tell you if this article is in the favorite of the user)
+        - global_mark_as_renter (int)
+        - nb_mark_as_renter (int)
+        Please note in the fixtures it misses the author username but in the object article you will have a field username_author
       tags:
         - Articles
       responses:
@@ -1166,14 +1170,13 @@ paths:
           description: Method not allowed
           schema:
             $ref: '#/definitions/ErrorGeneral'
-            
   '/user/:username/':
     get:
       summary: Get an user for public use
-      description: > 
-             This route will use the living addresses in the user model.
-              If one of the two users does not have any living address than
-              the result of distance will be a str for value Unknown
+      description: |
+        This route will use the living addresses in the user model.
+         If one of the two users does not have any living address than
+         the result of distance will be a str for value Unknown
       tags:
         - Public
         - Users
@@ -1184,17 +1187,11 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'     
-        
+            $ref: '#/definitions/ErrorGeneral'
   '/user/:username/:lat/:lng':
     get:
       summary: Get an user for public use
-      description: > 
-             This route will use the living address in the user model for
-             the user you are showing.
-              For the other user (the connected one) it will use the gps
-              coordonates.
-              If the first user does not have any living address the result of distance will be a str for value Unknown 
+      description: "This route will use the living address in the user model for the user you are showing.\n For the other user (the connected one) it will use the gps\n coordonates.\n If the first user does not have any living address the result of distance will be a str for value Unknown \n"
       tags:
         - Public
         - Users
@@ -1205,8 +1202,7 @@ paths:
         '405':
           description: Method not allowed
           schema:
-            $ref: '#/definitions/ErrorGeneral'                   
-            
+            $ref: '#/definitions/ErrorGeneral'
 definitions:
   Key:
     type: object
@@ -1214,7 +1210,6 @@ definitions:
       key:
         type: String
         description: Access Token
-        
   UserPublic:
     type: object
     properties:
@@ -1232,9 +1227,9 @@ definitions:
       is_active:
         type: boolean
       role:
-        type: string   
+        type: string
       distance:
-        type: string        
+        type: string
   User:
     type: object
     properties:
